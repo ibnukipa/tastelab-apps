@@ -15,7 +15,7 @@ export const FontSizeConstant = {
   xxHuge: 30,
   xxxHuge: 32,
   uHuge: 36
-};
+}
 
 export const PaddingSizeConstant = {
   uSmall: 2,
@@ -29,4 +29,4 @@ export const PaddingSizeConstant = {
   xxxLarge: 35,
   uLarge: 45,
   huge: 50,
-};
+}

@@ -1,17 +1,18 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {StatusBar} from 'expo-status-bar';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import React from 'react'
+import {StyleSheet, View} from 'react-native'
+import {StatusBar} from 'expo-status-bar'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
-import BarConstant from '@constants/bar';
+import BarConstant from '@constants/bar'
+import ColorConstant from "@constants/color";
 
-const Container = ({backgroundColor, containerStyle, barStyle = 'dark', children}) => {
-  const insets = useSafeAreaInsets();
+const Container = ({backgroundColor, containerStyle, barStyle = 'dark', children, hasHeader}) => {
+  const insets = useSafeAreaInsets()
   return (
     <View
       style={[
         styles.container,
-        {paddingTop: insets.top},
+        !hasHeader && { paddingTop: insets.top },
         backgroundColor && {backgroundColor},
         containerStyle,
       ]}
@@ -25,7 +26,8 @@ const Container = ({backgroundColor, containerStyle, barStyle = 'dark', children
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: ColorConstant.white,
   },
-});
+})
 
-export default Container;
+export default Container

@@ -1,12 +1,12 @@
-import { createRef } from 'react';
+import { createRef } from 'react'
 
-const routerRef = createRef();
-const isRouterReady = createRef();
+const routerRef = createRef()
+const isRouterReady = createRef()
 
 const navigate = (name, params) => {
   if (isRouterReady.current && routerRef.current) {
-    routerRef.current.navigate(name, params);
+    routerRef.current.navigate(name, params)
   }
 };
 
-export { routerRef, isRouterReady, navigate };
+export { routerRef, isRouterReady, navigate }

@@ -3,4 +3,4 @@ export const AlignConstant = {
   left: 'left',
   right: 'right',
   justify: 'justify',
-};
+}

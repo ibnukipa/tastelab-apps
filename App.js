@@ -4,6 +4,8 @@ import {enableScreens} from 'react-native-screens'
 import {NavigationContainer} from "@react-navigation/native"
 import * as SplashScreen from 'expo-splash-screen'
 import { Asset } from 'expo-asset'
+import AppLoading from 'expo-app-loading'
+import {useFonts} from "expo-font"
 
 import Router from "@routes/Router"
 import {routerRef, isRouterReady} from "@routes/RouterService"
@@ -18,15 +20,24 @@ export default function App() {
     preventSplashHide()
   }, [])
 
-  return (
-    <NavigationContainer
-      ref={routerRef}
-      onReady={onRouterReady}
-    >
-      <SafeAreaProvider>
+  const [isFontsLoaded] = useFonts({
+    'Roboto-Black': require('./assets/fonts/Roboto-Black.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-Light': require('./assets/fonts/Roboto-Light.ttf'),
+    'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
+    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-Thin': require('./assets/fonts/Roboto-Thin.ttf'),
+  });
+
+  return !isFontsLoaded ? <AppLoading /> : (
+    <SafeAreaProvider>
+      <NavigationContainer
+        ref={routerRef}
+        onReady={onRouterReady}
+      >
         <Router/>
-      </SafeAreaProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </SafeAreaProvider>
   )
 }
 
@@ -39,12 +50,12 @@ async function downloadAssets() {
   const images = [
     require('@assets/adaptive-icon.png'),
     require('@assets/icon.png'),
-  ];
+  ]
 
   const cacheImages = images.map(image => {
-    return Asset.fromModule(image).downloadAsync();
-  });
-  return Promise.all(cacheImages);
+    return Asset.fromModule(image).downloadAsync()
+  })
+  return Promise.all(cacheImages)
 }
 
 // Router callback

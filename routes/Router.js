@@ -1,23 +1,24 @@
-import React from 'react';
-import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import React from 'react'
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack'
 
-import Materials from "@screens/Materials";
-import Material from "@screens/Material";
+import Materials from "@screens/Materials"
+import Account from "@screens/Account"
 
 const defaultNavigatorProps = {
   screenOptions: {
+    cardShadowEnabled: true,
     cardOverlayEnabled: true,
     gestureEnabled: true,
     ...TransitionPresets.SlideFromRightIOS,
   },
   headerMode: 'none',
-};
+}
 
-const RootStack = createStackNavigator();
-const UserStack = createStackNavigator();
+const RootStack = createStackNavigator()
+const UserStack = createStackNavigator()
 
 const UserRoutes = () => (
-  <UserStack.Navigator initialRouteName={'Materials'}>
+  <UserStack.Navigator initialRouteName={'Materials'} {...defaultNavigatorProps}>
     <UserStack.Screen
       name={'Materials'}
       component={Materials}
@@ -25,7 +26,7 @@ const UserRoutes = () => (
         title: 'Raw Materials'
       }}
     />
-    <UserStack.Screen name={'Material'} component={Material}/>
+    <UserStack.Screen name={'Account'} component={Account}/>
   </UserStack.Navigator>
 )
 
@@ -35,5 +36,5 @@ export default function Router() {
     <RootStack.Navigator initialRouteName={'UserRoutes'} {...defaultNavigatorProps}>
       <RootStack.Screen name={'UserRoutes'} component={UserRoutes} />
     </RootStack.Navigator>
-  );
+  )
 }
