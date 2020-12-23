@@ -1,7 +1,7 @@
-import React, { memo } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-import { truncate } from "lodash-es"
+import React, {memo} from 'react'
+import {StyleSheet, View} from 'react-native'
+import {ScrollView} from 'react-native-gesture-handler'
+import {truncate} from "lodash-es"
 
 import Text from "@components/Text"
 import {PaddingSizeConstant} from "@constants/size"
@@ -33,7 +33,7 @@ export const MaterialWarehouse = memo(({id}) => {
       <View style={styles.warehouseHeader}>
         <Icon style={styles.listHeaderIcon} color={ColorConstant.blueGray} name={'warehouse'} type={'awesome'}/>
         <Text color={ColorConstant.blueGray300} bold size={'small'}>
-          {truncate(warehouse.name, { length: 18 })}
+          {truncate(warehouse.name, {length: 18})}
         </Text>
       </View>
     </View>
@@ -47,7 +47,7 @@ export const MaterialStore = memo(({id}) => {
       <View style={styles.warehouseHeader}>
         <Icon style={styles.listHeaderIcon} color={ColorConstant.blueGray} name={'store'} type={'awesome'}/>
         <Text color={ColorConstant.blueGray300} bold size={'small'}>
-          {truncate(store.name, { length: 18 })}
+          {truncate(store.name, {length: 18})}
         </Text>
       </View>
     </View>
@@ -59,7 +59,7 @@ export const MaterialSupplier = memo(({id}) => {
   return (
     <View style={styles.supplier}>
       <View style={styles.supplierIcon}>
-        <Icon size={'xxLarge'} name={'user-tie'} color={ColorConstant.gradientSecondary} type={'awesome'} />
+        <Icon size={'xxLarge'} name={'user-tie'} color={ColorConstant.gradientSecondary} type={'awesome'}/>
       </View>
       <View style={styles.supplierContent}>
         {
@@ -87,7 +87,7 @@ const MaterialDetail = () => {
       </View>
       <Divider/>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {material?.warehouses?.map(id => <MaterialWarehouse key={id} id={id} />)}
+        {material?.warehouses?.map(id => <MaterialWarehouse key={id} id={id}/>)}
       </ScrollView>
       <Divider space={20}/>
       <View style={styles.listHeader}>
@@ -95,7 +95,7 @@ const MaterialDetail = () => {
       </View>
       <Divider/>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {material?.stores?.map(id => <MaterialStore key={id} id={id} />)}
+        {material?.stores?.map(id => <MaterialStore key={id} id={id}/>)}
       </ScrollView>
       <Divider space={20}/>
       <View style={styles.listHeader}>

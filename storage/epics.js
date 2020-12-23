@@ -1,6 +1,6 @@
-import { combineEpics } from 'redux-observable';
-import { catchError, mergeMap } from 'rxjs/operators';
-import { BehaviorSubject, of } from 'rxjs';
+import {combineEpics} from 'redux-observable';
+import {catchError, mergeMap} from 'rxjs/operators';
+import {BehaviorSubject, of} from 'rxjs';
 
 import * as epics from '@storage/reducer/reducerEpics';
 import ENV from "@constants/env";

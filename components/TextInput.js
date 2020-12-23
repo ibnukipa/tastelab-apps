@@ -1,20 +1,20 @@
-import React, { useState, useCallback } from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   TextInput as RNTextInput,
   View,
   Platform,
   StyleSheet,
 } from 'react-native';
-import { Controller } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 
 import ColorConstant from '@constants/color';
-import { FontSizeConstant } from '@constants/size';
+import {FontSizeConstant} from '@constants/size';
 
 import Text from '@components/Text';
 import Icon from '@components/Icon';
 import Divider from '@components/Divider';
 
-const TEXT_PADDING = 5;
+const TEXT_PADDING = 8;
 
 const TextInput = ({
   title,
@@ -32,6 +32,7 @@ const TextInput = ({
   isSpace = true,
   isDimmed = false,
   isClear = false,
+  isLight = false,
   watch,
   setValue,
   opacityAnim,
@@ -42,19 +43,20 @@ const TextInput = ({
   const [isSecure, setIsSecure] = useState(secureTextEntry);
   const hasIconLeft = iconName && iconPosition === 'left';
   const hasIconRight = iconName && iconPosition === 'right';
-  const watchInput = watch(name);
-
-  const onPressSecure = useCallback(() => setIsSecure(!isSecure), [])
+  const watchInput = watch?.(name);
+  const [iconColor] = useState(isLight ? ColorConstant.blueGray : ColorConstant.white)
+  const onPressSecure = useCallback(() => setIsSecure(!isSecure), [isSecure])
   const onPressClear = useCallback(() => {
     setValue?.(name, '')
     onClear()
   }, [onClear, setValue])
   return (
     <View>
-      {title && <Text color={ColorConstant.primary}>{title}</Text>}
+      {title && <Text medium color={ColorConstant.primary}>{title}</Text>}
       <View
         style={[
           styles.container,
+          isLight && styles.lightContainer,
           errorMessage && styles.containerError,
           containerStyle,
           isSpace && styles.containerSpace,
@@ -63,18 +65,17 @@ const TextInput = ({
       >
         {hasIconLeft && (
           <Icon
-            color={ColorConstant.white}
+            color={iconColor}
             onPress={iconOnPress}
             style={styles.iconContainerLeft}
             name={iconName}
-            size={'small'}
           />
         )}
         <Controller
           control={control}
           name={name}
           defaultValue={defaultValue}
-          render={({ onChange, onBlur, value }) => (
+          render={({onChange, onBlur, value}) => (
             <RNTextInput
               underlineColorAndroid={'transparent'}
               style={[
@@ -83,7 +84,7 @@ const TextInput = ({
                 hasIconRight && styles.textInputHasIconRight,
                 style,
               ]}
-              placeholderTextColor={ColorConstant.whiteDimmed}
+              placeholderTextColor={isLight ? ColorConstant.blueGray100 : ColorConstant.whiteDimmed}
               secureTextEntry={isSecure}
               onBlur={onBlur}
               onChangeText={(changedValue) => {
@@ -98,20 +99,18 @@ const TextInput = ({
 
         {secureTextEntry && (
           <Icon
-            color={ColorConstant.white}
+            color={iconColor}
             onPress={onPressSecure}
             style={styles.iconContainerRight}
             name={!isSecure ? 'eye-outline' : 'eye-off-outline'}
-            size={'small'}
           />
         )}
         {isClear && !!watchInput && (
           <Icon
-            color={ColorConstant.white}
+            color={iconColor}
             onPress={onPressClear}
             style={styles.iconContainerRight}
             name={'close-circle'}
-            size={'small'}
           />
         )}
         {hasIconRight && (
@@ -120,7 +119,6 @@ const TextInput = ({
             onPress={iconOnPress}
             style={styles.iconContainerRight}
             name={iconName}
-            size={'small'}
           />
         )}
       </View>
@@ -136,7 +134,7 @@ const TextInput = ({
           </Text>
         )}
       </View>
-      {isSpace && <Divider space={infoMessage ? 25 : 20} />}
+      {isSpace && <Divider space={infoMessage ? 25 : 20}/>}
     </View>
   );
 };
@@ -148,6 +146,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  lightContainer: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: ColorConstant.blueGray,
   },
   containerDimmed: {
     backgroundColor: ColorConstant.whiteDimmed,

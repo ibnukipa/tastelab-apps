@@ -4,7 +4,7 @@ import {StatusBar} from 'expo-status-bar'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 
 import BarConstant from '@constants/bar'
-import ColorConstant from "@constants/color";
+import ColorConstant from "@constants/color"
 
 const Container = ({backgroundColor, containerStyle, barStyle = 'dark', children, hasHeader}) => {
   const insets = useSafeAreaInsets()
@@ -12,7 +12,7 @@ const Container = ({backgroundColor, containerStyle, barStyle = 'dark', children
     <View
       style={[
         styles.container,
-        !hasHeader && { paddingTop: insets.top },
+        !hasHeader && {paddingTop: insets.top},
         backgroundColor && {backgroundColor},
         containerStyle,
       ]}

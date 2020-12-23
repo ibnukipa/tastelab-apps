@@ -1,17 +1,19 @@
-import React  from 'react';
-import { TouchableOpacity } from 'react-native';
-import { debounce } from 'lodash-es';
+import React from 'react';
+import {TouchableOpacity} from 'react-native';
+import {debounce} from 'lodash-es';
+import * as Haptics from "expo-haptics";
 
-const Touchable = ({ children, hasHaptic, onPress, activeOpacity = 0.8, ...props }) => (
+const Touchable = ({children, hasHaptic, onPress, isDisabled, activeOpacity = 0.8, ...props}) => (
   <TouchableOpacity
-    disabled={!onPress}
+    disabled={!onPress || isDisabled}
     activeOpacity={activeOpacity}
     onPress={
       onPress
         ? () => {
-            if (onPress instanceof Function)
-              debounce(onPress, 300, { leading: true, trailing: false })();
-          }
+          if (hasHaptic) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+          if (onPress instanceof Function)
+            debounce(onPress, 300, {leading: true, trailing: false})();
+        }
         : null
     }
     {...props}

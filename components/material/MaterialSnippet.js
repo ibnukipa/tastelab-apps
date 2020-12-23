@@ -1,17 +1,23 @@
 import React, {memo, useCallback} from 'react'
-import { StyleSheet, View } from 'react-native'
-import { truncate } from "lodash-es"
+import {StyleSheet, View} from 'react-native'
+import {truncate} from "lodash-es"
 import Text from "@components/Text"
 import Touchable from "@components/Touchable"
 import {PaddingSizeConstant} from "@constants/size"
 import Divider from "@components/Divider"
 import ColorConstant from "@constants/color"
 import {useDispatch, useSelector} from "react-redux"
-import {isMaterialSelected, materialDetailSelector, supplierDetailSelector, unselect, select} from "@storage/reducer/material"
+import {
+  isMaterialSelected,
+  materialDetailSelector,
+  supplierDetailSelector,
+  unselect,
+  select
+} from "@storage/reducer/material"
 import Icon from "@components/Icon"
 import * as Haptics from 'expo-haptics'
 
-const MaterialSnippet = memo(({ onPress, id }) => {
+const MaterialSnippet = memo(({onPress, id}) => {
   const dispatch = useDispatch()
   const material = useSelector(state => materialDetailSelector(state, id))
   const supplier = useSelector(state => supplierDetailSelector(state, material.supplier))
@@ -20,15 +26,14 @@ const MaterialSnippet = memo(({ onPress, id }) => {
   // TODO add animation for select/unselect
   const isSelected = useSelector(state => isMaterialSelected(state, id))
   const onLongPressSnippet = useCallback(() => {
-    if(!isSelected) {
+    if (!isSelected) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
       dispatch(select(id))
     }
   }, [id, isSelected])
   const onPressSnippet = useCallback(() => {
-    if(!isSelected) onPress()
+    if (!isSelected) onPress()
     else {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
       dispatch(unselect(id))
     }
   }, [onPress, id, isSelected])
@@ -61,18 +66,20 @@ const MaterialSnippet = memo(({ onPress, id }) => {
                 <View style={[styles.detail, styles.marginRight, isSelected && styles.detailSelected]}>
                   <Icon style={styles.detailIcon} color={ColorConstant.blueGray} name={'user-cog'} type={'awesome'}/>
                   <Text color={ColorConstant.blueGray300} bold size={'small'}>
-                    {truncate(supplier.contactName, { length: 16 })}
+                    {truncate(supplier.contactName, {length: 16})}
                   </Text>
                 </View>
               )
             }
             <View style={[styles.detail, styles.marginRight, isSelected && styles.detailSelected]}>
               <Icon style={styles.detailIcon} color={ColorConstant.blueGray100} name={'warehouse'} type={'awesome'}/>
-              <Text color={ColorConstant.blueGray} size={'small'}>{ material?.warehouses?.length > 9 ? '9+' : material?.warehouses?.length}</Text>
+              <Text color={ColorConstant.blueGray}
+                    size={'small'}>{material?.warehouses?.length > 9 ? '9+' : material?.warehouses?.length}</Text>
             </View>
             <View style={[styles.detail, isSelected && styles.detailSelected]}>
               <Icon style={styles.detailIcon} color={ColorConstant.blueGray100} name={'store'} type={'awesome'}/>
-              <Text color={ColorConstant.blueGray} size={'small'}>{ material?.stores?.length > 9 ? '9+' : material?.stores?.length}</Text>
+              <Text color={ColorConstant.blueGray}
+                    size={'small'}>{material?.stores?.length > 9 ? '9+' : material?.stores?.length}</Text>
             </View>
           </View>
         </View>

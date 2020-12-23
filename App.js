@@ -2,25 +2,25 @@ import React, {useState} from 'react'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 import {enableScreens} from 'react-native-screens'
 import {NavigationContainer} from "@react-navigation/native"
-import { Asset } from 'expo-asset'
+import {Asset} from 'expo-asset'
 import AppLoading from 'expo-app-loading'
 import {loadAsync} from "expo-font"
 
 import Router from "@routes/Router"
 import {routerRef, isRouterReady} from "@routes/RouterService"
 import {Provider} from "react-redux";
-import store from "@storage/store";
+import {store} from "@storage/store";
 
 enableScreens()
 export default function App() {
   const [isReady, setIsReady] = useState(false)
   return !isReady ? (
-      <AppLoading
-        startAsync={prepareResources}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    ) : (
+    <AppLoading
+      startAsync={prepareResources}
+      onFinish={() => setIsReady(true)}
+      onError={console.warn}
+    />
+  ) : (
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer
@@ -61,7 +61,8 @@ async function prepareResources() {
   try {
     await downloadAssets()
     await loadFonts()
-  } catch (e) {}
+  } catch (e) {
+  }
 }
 
 // Router callback

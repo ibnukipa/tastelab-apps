@@ -5,17 +5,17 @@ import {listFetch, listSuccess, listError} from '@storage/reducer/material'
 import getMaterials$ from "@storage/api/getMaterials"
 import {normalizeResponse} from '@storage/reducer/db'
 
-export const fetchMaterialsEpic = (action$) =>
+export const fetchMaterialsEpic = (action$, state$) =>
   action$.pipe(
     filter(listFetch.match),
-    mergeMap(({ payload }) => getMaterials$({
+    mergeMap(({payload}) => getMaterials$({
       additionalParams: {
         storeId: payload?.storeId,
         keyword: payload?.keyword,
         page: payload?.page || 1
       }
-    }).pipe(
-      mergeMap(({ response }) => {
+    }, state$).pipe(
+      mergeMap((response) => {
         return of(
           normalizeResponse({modelName: 'material', data: response.data}),
           listSuccess({
@@ -28,7 +28,7 @@ export const fetchMaterialsEpic = (action$) =>
         )
       }),
       catchError(error => {
-        return of(listError({ ...payload, error: error.message}));
+        return of(listError({...payload, error: error.message}));
       })
     ))
   )
