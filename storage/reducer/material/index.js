@@ -79,6 +79,8 @@ export const materialListSelector = createSelector(
 
 export const materialDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'material', id }) || {}
 export const supplierDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'supplier', id }) || {}
+export const warehouseDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'warehouse', id }) || {}
+export const storeDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'store', id }) || {}
 
 export const materialCurrentIdSelector = createSelector(
   (state) => [state, state.material?.currentId],

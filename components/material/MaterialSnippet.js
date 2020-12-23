@@ -7,13 +7,8 @@ import {PaddingSizeConstant} from "@constants/size"
 import Divider from "@components/Divider"
 import ColorConstant from "@constants/color"
 import {useSelector} from "react-redux"
-import {dbIdSelector} from "@storage/reducer/db"
 import {materialDetailSelector, supplierDetailSelector} from "@storage/reducer/material"
 import Icon from "@components/Icon"
-
-const MaterialSupplier = memo(({id}) => {
-  return null
-})
 
 const MaterialSnippet = memo(({ onPress, id }) => {
   const material = useSelector(state => materialDetailSelector(state, id))
@@ -23,12 +18,10 @@ const MaterialSnippet = memo(({ onPress, id }) => {
       <View style={styles.icon}>
         <Icon size={'xxLarge'} name={'ticket-percent'} color={ColorConstant.gradientSecondary} type={'material'} />
       </View>
-      <View style={{ flex: 1 }}>
-        <View>
-          <Text numberOfLines={1} medium size={'large'}>
-            {material.nameEng}
-          </Text>
-        </View>
+      <View style={styles.content}>
+        <Text numberOfLines={1} medium size={'large'}>
+          {material.nameEng}
+        </Text>
         <Divider space={5}/>
         <View style={styles.detailContainer}>
           <View style={styles.detailWrapper}>
@@ -86,6 +79,9 @@ const styles = StyleSheet.create({
   },
   marginRight: {
     marginRight: 5,
+  },
+  content: {
+    flex: 1
   },
   icon: {
     height: 40,
