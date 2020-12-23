@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text as RNText, StyleSheet } from 'react-native';
+import {Text as RNText, StyleSheet} from 'react-native';
 
-import { AlignConstant } from 'constants/align';
-import { FontSizeConstant } from 'constants/size';
+import {AlignConstant} from 'constants/align';
+import {FontSizeConstant} from 'constants/size';
 import ColorConstant from 'constants/color';
 
 const Text = ({

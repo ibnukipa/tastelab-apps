@@ -22,7 +22,7 @@ export const MaterialSlice = createSlice({
   initialState,
   reducers: {
     listFetch: (state, action) => {
-      const { isClearing, isReFetch } = action.payload
+      const {isClearing, isReFetch} = action.payload
       const oldState = state.list
       const oldData = isReFetch ? [] : isClearing ? take(oldState?.data, 20) : oldState.data
       state.list = {
@@ -33,7 +33,7 @@ export const MaterialSlice = createSlice({
       }
     },
     listSuccess: (state, action) => {
-      const { data, meta } = action.payload
+      const {data, meta} = action.payload
       const materials = data || []
       const oldMaterials = state.list?.data || []
       state.list = {
@@ -46,8 +46,8 @@ export const MaterialSlice = createSlice({
       }
     },
     listError: (state, action) => {
-      const { meta, error } = action.payload
-      state.list= {
+      const {meta, error} = action.payload
+      state.list = {
         ...state.list,
         meta,
         isLoading: false,
@@ -82,17 +82,17 @@ export const materialListSelector = createSelector(
   ([material]) => material?.list?.data || []
 );
 
-export const materialDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'material', id }) || {}
-export const supplierDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'supplier', id }) || {}
-export const warehouseDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'warehouse', id }) || {}
-export const storeDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'store', id }) || {}
+export const materialDetailSelector = (state, id) => dbIdSelector(state, {modelName: 'material', id}) || {}
+export const supplierDetailSelector = (state, id) => dbIdSelector(state, {modelName: 'supplier', id}) || {}
+export const warehouseDetailSelector = (state, id) => dbIdSelector(state, {modelName: 'warehouse', id}) || {}
+export const storeDetailSelector = (state, id) => dbIdSelector(state, {modelName: 'store', id}) || {}
 export const isMaterialSelected = createSelector(
   (state, id) => [state.material.list?.selectedData || [], id],
   ([selectedData, id]) => selectedData.includes(id)
 )
 export const materialCurrentIdSelector = createSelector(
   (state) => [state, state.material?.currentId],
-  ([state, id]) => dbIdSelector(state, { modelName: 'material', id }) || {},
+  ([state, id]) => dbIdSelector(state, {modelName: 'material', id}) || {},
 )
 
 // actions

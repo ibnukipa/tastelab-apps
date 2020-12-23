@@ -1,27 +1,26 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from 'react'
+import {StyleSheet} from 'react-native'
+import Touchable from "@components/Touchable"
+import ColorConstant from "@constants/color"
+import Text from "@components/Text"
+import {PaddingSizeConstant} from "@constants/size"
 
-const Button = ({ onPress, name }) => (
-  <TouchableOpacity style={s.button} onPress={onPress} activeOpacity={0.9}>
-    <Text style={s.button__text}>{name}</Text>
-  </TouchableOpacity>
-);
+const Button = ({onPress, name, isDisabled}) => (
+  <Touchable style={[styles.button, isDisabled && styles.disabled]} isDisabled={isDisabled} onPress={onPress}>
+    <Text medium align={'center'} size={'large'} color={ColorConstant.white}>{name}</Text>
+  </Touchable>
+)
 
-const s = StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
-    paddingVertical: 15,
-    marginBottom: 15,
-
-    width: 240,
-
-    backgroundColor: '#333',
-    borderRadius: 6,
+    paddingVertical: PaddingSizeConstant.medium,
+    marginBottom: PaddingSizeConstant.medium,
+    backgroundColor: ColorConstant.blueGray700,
+    borderRadius: 5,
   },
-
-  button__text: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-});
+  disabled: {
+    backgroundColor: ColorConstant.blueGray,
+  }
+})
 
 export default Button

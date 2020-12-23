@@ -34,7 +34,7 @@ export default function Router() {
   // TODO add auth-routes flow here
   return (
     <RootStack.Navigator initialRouteName={'UserRoutes'} {...defaultNavigatorProps}>
-      <RootStack.Screen name={'UserRoutes'} component={UserRoutes} />
+      <RootStack.Screen name={'UserRoutes'} component={UserRoutes}/>
     </RootStack.Navigator>
   )
 }
