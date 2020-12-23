@@ -11,16 +11,16 @@ export const fetchMaterialsEpic = (action$) =>
     mergeMap(({ payload }) => getMaterials$({
       additionalParams: {
         storeId: payload?.storeId,
-        page: payload?.meta.page || 1
+        keyword: payload?.keyword,
+        page: payload?.page || 1
       }
     }).pipe(
       mergeMap(({ response }) => {
         return of(
           normalizeResponse({modelName: 'material', data: response.data}),
           listSuccess({
-            key: payload?.key,
             meta: {
-              ...payload?.meta,
+              page: response?.meta?.current_page || 1,
               hasNext: !!response.links.next
             },
             data: response?.data?.map(item => ({id: item.id})),

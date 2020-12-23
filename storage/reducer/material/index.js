@@ -11,9 +11,7 @@ const DEFAULT_LIST_STATE = {
 }
 
 const initialState = {
-  list: {
-    default: DEFAULT_LIST_STATE
-  }
+  list: DEFAULT_LIST_STATE
 };
 
 // slicer
@@ -23,24 +21,22 @@ export const MaterialSlice = createSlice({
   initialState,
   reducers: {
     listFetch: (state, action) => {
-      const { key, isClearing } = action.payload
-      const listKey = key || 'default'
-      const oldState = state.list[listKey]
-      const oldData = isClearing ? take(oldState?.data, 20) : oldState.data
-      state.list[listKey] = {
+      const { isClearing, isReFetch } = action.payload
+      const oldState = state.list
+      const oldData = isReFetch ? [] : isClearing ? take(oldState?.data, 20) : oldState.data
+      state.list = {
         ...oldState,
         data: oldData,
-        isLoading: isClearing,
-        fetchingMore: !isClearing,
+        isLoading: isClearing || isReFetch,
+        fetchingMore: !isClearing && !isReFetch,
       }
     },
     listSuccess: (state, action) => {
-      const { key, data, meta } = action.payload
-      const listKey = key || 'default'
+      const { data, meta } = action.payload
       const materials = data || []
-      const oldMaterials = state.list[listKey]?.data || []
-      state.list[listKey] = {
-        ...state.list[listKey],
+      const oldMaterials = state.list?.data || []
+      state.list = {
+        ...state.list,
         data: unionBy(oldMaterials, materials, 'id'),
         meta,
         isLoading: false,
@@ -49,10 +45,9 @@ export const MaterialSlice = createSlice({
       }
     },
     listError: (state, action) => {
-      const { key, meta, error } = action.payload
-      const listKey = key || 'default'
-      state.list[listKey] = {
-        ...state.list[listKey],
+      const { meta, error } = action.payload
+      state.list= {
+        ...state.list,
         meta,
         isLoading: false,
         fetchingMore: false,
@@ -68,13 +63,13 @@ export const MaterialSlice = createSlice({
 
 // selectors
 export const materialListStateSelector = createSelector(
-  (state, listKey) => [state.material, listKey],
-  ([material, listKey]) => material?.list?.[listKey || 'default'] || DEFAULT_LIST_STATE
+  (state) => [state.material],
+  ([material]) => material?.list || DEFAULT_LIST_STATE
 );
 
 export const materialListSelector = createSelector(
-  (state, listKey) => [state.material, listKey],
-  ([material, listKey]) => material?.list?.[listKey || 'default']?.data || []
+  (state) => [state.material],
+  ([material]) => material?.list?.data || []
 );
 
 export const materialDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'material', id }) || {}

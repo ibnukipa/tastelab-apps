@@ -1,36 +1,36 @@
 import React, {useCallback, useEffect, useState} from "react"
 import {useDispatch} from "react-redux"
 
-const useInfiniteFetching = (fetcher, fetcherData) => {
+const useInfiniteFetching = (fetcher) => {
   const dispatch = useDispatch()
-  const [page, setPage] = useState(1)
   const [shouldFetchMore, setShouldFetchMore] = useState(false)
-  const [shouldReFetch, setShouldReFetch] = useState(true)
+  const [shouldReFetch, setShouldReFetch] = useState(false)
+  const [fetchData, setFetchData] = useState({})
+  const [loadMorePage, setLoadMorePage] = useState(2)
 
-  const fetchMore = useCallback((meta) => {
-    if (meta.hasNext) setShouldFetchMore(true)
+  const fetchMore = useCallback((data) => {
+    setFetchData(data)
+    setShouldFetchMore(true)
   }, [])
 
-  const reFetch = useCallback(() => {
+  const reFetch = useCallback((data) => {
+    setFetchData(data)
     setShouldReFetch(true)
   }, [])
 
   useEffect(() => {
     if (!shouldReFetch) return
-    dispatch(fetcher({...fetcherData, meta: {...(fetcherData?.meta || {}), page: 1}, isClearing: true}))
+    dispatch(fetcher({...fetchData, page: 1}))
     setShouldReFetch(false)
-    setPage(2);
+    setLoadMorePage(2)
   }, [shouldReFetch])
 
-  useEffect(
-    () => {
-      if (!shouldFetchMore) return
-
-      dispatch(fetcher({...fetcherData, meta: {...(fetcherData?.meta || {}), page}}))
-      setShouldFetchMore(false);
-      setPage(page + 1);
-    }, [page, shouldFetchMore],
-  );
+  useEffect(() => {
+    if (!shouldFetchMore) return
+    dispatch(fetcher({...fetchData, page: loadMorePage}))
+    setShouldFetchMore(false);
+    setLoadMorePage(loadMorePage + 1)
+  }, [loadMorePage, shouldFetchMore])
 
   return [fetchMore, reFetch]
 }

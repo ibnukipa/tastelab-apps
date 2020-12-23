@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   TextInput as RNTextInput,
   View,
@@ -35,6 +35,8 @@ const TextInput = ({
   watch,
   setValue,
   opacityAnim,
+  onChangeHandler = () => {},
+  onClear = () => {},
   ...restProps
 }) => {
   const [isSecure, setIsSecure] = useState(secureTextEntry);
@@ -42,6 +44,11 @@ const TextInput = ({
   const hasIconRight = iconName && iconPosition === 'right';
   const watchInput = watch(name);
 
+  const onPressSecure = useCallback(() => setIsSecure(!isSecure), [])
+  const onPressClear = useCallback(() => {
+    setValue?.(name, '')
+    onClear()
+  }, [onClear, setValue])
   return (
     <View>
       {title && <Text color={ColorConstant.primary}>{title}</Text>}
@@ -79,7 +86,10 @@ const TextInput = ({
               placeholderTextColor={ColorConstant.whiteDimmed}
               secureTextEntry={isSecure}
               onBlur={onBlur}
-              onChangeText={(changedValue) => onChange(changedValue)}
+              onChangeText={(changedValue) => {
+                onChange(changedValue)
+                onChangeHandler(changedValue)
+              }}
               value={value}
               {...restProps}
             />
@@ -89,7 +99,7 @@ const TextInput = ({
         {secureTextEntry && (
           <Icon
             color={ColorConstant.white}
-            onPress={() => setIsSecure(!isSecure)}
+            onPress={onPressSecure}
             style={styles.iconContainerRight}
             name={!isSecure ? 'eye-outline' : 'eye-off-outline'}
             size={'small'}
@@ -98,7 +108,7 @@ const TextInput = ({
         {isClear && !!watchInput && (
           <Icon
             color={ColorConstant.white}
-            onPress={() => setValue?.(name, '')}
+            onPress={onPressClear}
             style={styles.iconContainerRight}
             name={'close-circle'}
             size={'small'}

@@ -101,7 +101,7 @@ const MaterialDetail = () => {
       <View style={styles.listHeader}>
         <Text color={ColorConstant.blueGray300} bold size={'small'}>Supplier</Text>
       </View>
-      <Divider/>
+      <Divider space={15}/>
       <MaterialSupplier id={material.supplier}/>
       <Divider space={50}/>
     </View>

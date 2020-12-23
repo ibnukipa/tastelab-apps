@@ -1,32 +1,51 @@
-import React, { useRef, useCallback } from 'react'
-import { FlatList } from 'react-native';
+import React, { useRef, useCallback, useState, useEffect } from 'react'
+import { FlatList } from 'react-native'
 
 import Container from "@components/Container"
 import Header from "@components/Header"
-import MaterialSnippet from "@components/material/MaterialSnippet";
-import MaterialDetail, {MaterialDetailHeader} from "@components/material/MaterialDetail";
-import {Modalize} from "react-native-modalize";
-import {useDispatch, useSelector} from "react-redux";
-import {detailFetch, listFetch, materialListSelector, materialListStateSelector} from "@storage/reducer/material";
-import useInfiniteFetching from "@hooks/useInfiniteFetching";
-import ListEmpty from "@components/ListEmpty";
-import Divider from "@components/Divider";
-import Text from "@components/Text";
+import MaterialSnippet from "@components/material/MaterialSnippet"
+import MaterialDetail, {MaterialDetailHeader} from "@components/material/MaterialDetail"
+import {Modalize} from "react-native-modalize"
+import {useDispatch, useSelector} from "react-redux"
+import {detailFetch, listFetch, materialListSelector, materialListStateSelector} from "@storage/reducer/material"
+import useInfiniteFetching from "@hooks/useInfiniteFetching"
+import ListEmpty from "@components/ListEmpty"
+import Divider from "@components/Divider"
+import Text from "@components/Text"
 
 export default function Materials() {
   const dispatch = useDispatch()
+  const [keyword, setKeyword] = useState(null)
+
+  // modals
   const MaterialDetailModal = useRef(null)
   const openMaterialDetail = useCallback((id) => () => {
     dispatch(detailFetch(id))
     MaterialDetailModal.current?.open()
-  }, [])
+  }, [MaterialDetailModal])
 
   // materials data
   const materialsState = useSelector(state => materialListStateSelector(state))
   const materials = useSelector(state => materialListSelector(state))
-  const [fetchMore, reFetch] = useInfiniteFetching(listFetch)
 
-  const onEndReached = () => fetchMore(materialsState.meta)
+  // side effects
+  const [fetchMore, reFetch] = useInfiniteFetching(listFetch)
+  const onSearch = useCallback((keyword) => {
+    setKeyword(keyword)
+  }, [])
+  useEffect(() => {
+    reFetch({ keyword, isReFetch: true })
+  }, [keyword])
+
+  // list
+  const onRefresh = useCallback(() => {
+    reFetch({ keyword, isClearing: true })
+  }, [reFetch, keyword])
+  const onEndReached = useCallback(() => {
+    if(materialsState.meta.hasNext && !materialsState.fetchingMore) {
+      fetchMore({ keyword })
+    }
+  }, [fetchMore, materialsState.meta, materialsState.fetchingMore, keyword])
   const renderItem = useCallback(({item}) => (
     <MaterialSnippet
       onPress={openMaterialDetail(item.id)}
@@ -41,12 +60,13 @@ export default function Materials() {
     <MaterialDetailHeader key='0'/>,
     <MaterialDetail key='1'/>
   ], [])
+
   return (
     <Container hasHeader barStyle={'light'}>
-      <Header searchBox title={'Materials'} />
+      <Header onSearch={onSearch} searchBox title={'Materials'} />
       <FlatList
         refreshing={false}
-        onRefresh={reFetch}
+        onRefresh={onRefresh}
         removeClippedSubviews={false}
         data={materials}
         keyExtractor={renderItemKey}

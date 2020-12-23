@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useCallback } from 'react'
 import { Platform, StyleSheet, View, Animated } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -9,16 +9,25 @@ import { deviceWidth } from "@constants/dimension"
 
 import Text from '@components/Text'
 import TextInput from '@components/TextInput'
-import {PaddingSizeConstant} from "@constants/size";
+import {PaddingSizeConstant} from "@constants/size"
+import {debounce} from "lodash-es"
 
-const Header = ({ title, searchBox }) => {
+const Header = ({ title, searchBox, onSearch }) => {
   // Search Form
-  const { control: sControl, setValue: sSetValue, watch: sWatch } = useForm({
-    mode: 'onChange',
-  })
+  const { control: sControl, setValue: sSetValue, watch: sWatch, handleSubmit: sHandleSubmit } = useForm()
 
   // Layout
   const insets = useSafeAreaInsets()
+
+  const searchSubmit = (data) => {
+    const { keyword } = data
+    if(keyword.length > 2 || keyword === '') onSearch(keyword)
+  }
+
+  const onSubmit = useCallback(() => {
+    const handle = debounce(sHandleSubmit(searchSubmit), 800)
+    handle()
+  }, [sHandleSubmit])
 
   return (
     <View style={[styles.wrapper]}>
@@ -46,7 +55,7 @@ const Header = ({ title, searchBox }) => {
                 iconPosition={'left'}
                 iconName={'search'}
                 style={styles.searchInput}
-                name={'search'}
+                name={'keyword'}
                 isDimmed
                 isSpace={false}
                 isClear
@@ -54,6 +63,8 @@ const Header = ({ title, searchBox }) => {
                 setValue={sSetValue}
                 watch={sWatch}
                 placeholder={'Search'}
+                onChangeHandler={onSubmit}
+                onClear={onSubmit}
               />
             </Animated.View>
           )
