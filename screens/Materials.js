@@ -53,7 +53,6 @@ export default function Materials() {
     />
   ), [])
   const renderItemKey = useCallback((item) => item.id.toString(), [])
-  const renderSeparator = useCallback(() => <Divider line/>, [])
   const renderEmptyList = useCallback(() => <ListEmpty listState={materialsState}/>, [materialsState])
   const renderLoadMore = useCallback(() => <><Text align={'center'}>Loading...</Text><Divider space={30}/></>, [])
   const renderDetail = useCallback(() => [
@@ -68,12 +67,13 @@ export default function Materials() {
         refreshing={false}
         onRefresh={onRefresh}
         removeClippedSubviews={false}
+        showsVerticalScrollIndicator={false}
         data={materials}
         keyExtractor={renderItemKey}
         renderItem={renderItem}
         onEndReachedThreshold={0.9}
         onEndReached={onEndReached}
-        ItemSeparatorComponent={renderSeparator}
+        contentContainerStyle={{ paddingTop: 5 }}
         ListEmptyComponent={renderEmptyList}
         ListFooterComponent={materialsState.fetchingMore && renderLoadMore}
       />

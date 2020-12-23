@@ -1,5 +1,5 @@
 import {createSelector, createSlice} from '@reduxjs/toolkit';
-import {take, unionBy} from "lodash-es";
+import {remove, take, unionBy} from "lodash-es";
 import {dbIdSelector} from "@storage/reducer/db";
 
 const DEFAULT_LIST_STATE = {
@@ -7,6 +7,7 @@ const DEFAULT_LIST_STATE = {
   fetchingMore: false,
   hasError: false,
   data: [],
+  selectedData: [],
   meta: {}
 }
 
@@ -57,6 +58,15 @@ export const MaterialSlice = createSlice({
     },
     detailFetch: (state, action) => {
       state.currentId = action.payload
+    },
+    // TODO we can make select/unselect in different state domain (outside material domain)
+    select: (state, action) => {
+      state.list?.selectedData.push(action.payload)
+    },
+    unselect: (state, action) => {
+      // const curSelectedData = state.list?.selectedData
+      remove(state.list?.selectedData, (item) => item === action.payload)
+      // state.list.selectedData = curSelectedData
     }
   },
 });
@@ -76,7 +86,10 @@ export const materialDetailSelector = (state, id) => dbIdSelector(state, { model
 export const supplierDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'supplier', id }) || {}
 export const warehouseDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'warehouse', id }) || {}
 export const storeDetailSelector = (state, id) => dbIdSelector(state, { modelName: 'store', id }) || {}
-
+export const isMaterialSelected = createSelector(
+  (state, id) => [state.material.list?.selectedData || [], id],
+  ([selectedData, id]) => selectedData.includes(id)
+)
 export const materialCurrentIdSelector = createSelector(
   (state) => [state, state.material?.currentId],
   ([state, id]) => dbIdSelector(state, { modelName: 'material', id }) || {},
@@ -87,7 +100,9 @@ export const {
   listFetch,
   listSuccess,
   listError,
-  detailFetch
+  detailFetch,
+  select,
+  unselect,
 } = MaterialSlice.actions;
 
 export default MaterialSlice.reducer;

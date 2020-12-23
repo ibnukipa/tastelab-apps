@@ -1,14 +1,11 @@
 import React  from 'react';
-import { TouchableHighlight } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { debounce } from 'lodash-es';
 
-import ColorConstant from "@constants/color";
-
-const Touchable = ({ children, hasHaptic, onPress, ...props }) => (
-  <TouchableHighlight
+const Touchable = ({ children, hasHaptic, onPress, activeOpacity = 0.8, ...props }) => (
+  <TouchableOpacity
     disabled={!onPress}
-    activeOpacity={1}
-    underlayColor={ColorConstant.grayDimmed}
+    activeOpacity={activeOpacity}
     onPress={
       onPress
         ? () => {
@@ -22,7 +19,7 @@ const Touchable = ({ children, hasHaptic, onPress, ...props }) => (
     <>
       {children}
     </>
-  </TouchableHighlight>
+  </TouchableOpacity>
 );
 
 export default Touchable;
