@@ -33,11 +33,11 @@ export const DBSlice = createSlice({
 // selectors
 export const dbModelSelector = createSelector(
   (state, {modelName}) => [state.db, pluralize(modelName)],
-  ([db, modelName]) => db[modelName] || {}
+  ([db, modelName]) => db?.[modelName] || {}
 );
 export const dbIdSelector = createSelector(
   (state, {modelName, id}) => [state.db?.[pluralize(modelName)], id],
-  ([table, id]) => table[id] || {}
+  ([table, id]) => table?.[id] || {}
 );
 
 // actions

@@ -4,7 +4,7 @@ import { FlatList } from 'react-native';
 import Container from "@components/Container"
 import Header from "@components/Header"
 import MaterialSnippet from "@components/material/MaterialSnippet";
-import MaterialDetail from "@components/material/MaterialDetail";
+import MaterialDetail, {MaterialDetailHeader} from "@components/material/MaterialDetail";
 import {Modalize} from "react-native-modalize";
 import {useDispatch, useSelector} from "react-redux";
 import {detailFetch, listFetch, materialListSelector, materialListStateSelector} from "@storage/reducer/material";
@@ -35,15 +35,19 @@ export default function Materials() {
   ), [])
   const renderItemKey = useCallback((item) => item.id.toString(), [])
   const renderSeparator = useCallback(() => <Divider line/>, [])
-  const renderEmptyList = useCallback(() => <ListEmpty listState={materialsState}/>, [])
+  const renderEmptyList = useCallback(() => <ListEmpty listState={materialsState}/>, [materialsState])
   const renderLoadMore = useCallback(() => <><Text align={'center'}>Loading...</Text><Divider space={30}/></>, [])
+  const renderDetail = useCallback(() => [
+    <MaterialDetailHeader key='0'/>,
+    <MaterialDetail key='1'/>
+  ], [])
   return (
     <Container hasHeader barStyle={'light'}>
       <Header searchBox title={'Materials'} />
       <FlatList
         refreshing={false}
         onRefresh={reFetch}
-        removeClippedSubviews
+        removeClippedSubviews={false}
         data={materials}
         keyExtractor={renderItemKey}
         renderItem={renderItem}
@@ -54,10 +58,11 @@ export default function Materials() {
         ListFooterComponent={materialsState.fetchingMore && renderLoadMore}
       />
       <Modalize
+        adjustToContentHeight
         ref={MaterialDetailModal}
         panGestureComponentEnabled
       >
-        <MaterialDetail />
+        {renderDetail()}
       </Modalize>
     </Container>
   );
