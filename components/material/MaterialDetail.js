@@ -62,9 +62,13 @@ export const MaterialSupplier = memo(({id}) => {
         <Icon size={'xxLarge'} name={'user-tie'} color={ColorConstant.gradientSecondary} type={'awesome'} />
       </View>
       <View style={styles.supplierContent}>
-        <Text numberOfLines={1} medium>
-          {supplier.contactName}
-        </Text>
+        {
+          supplier.contactName && (
+            <Text numberOfLines={1} medium>
+              {supplier.contactName}
+            </Text>
+          )
+        }
         <Text numberOfLines={1} size={'small'}>
           {supplier.name}
         </Text>
