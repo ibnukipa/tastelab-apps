@@ -10,7 +10,7 @@ function getEnvironment() {
     return { envName: 'PRODUCTION', baseUrl: 'https://staging-api.development.tastelabgroup.com/api/v1' };
   }
   if (releaseChannel.indexOf('staging') !== -1) {
-    return { envName: 'STAGING', baseUrl: 'https://dev4-api.development.tastelabgroup.com/api/v1' };
+    return { envName: 'STAGING', baseUrl: 'https://dev3-api.development.tastelabgroup.com/api/v1' };
   }
 }
 
