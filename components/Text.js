@@ -7,7 +7,7 @@ import ColorConstant from 'constants/color';
 
 const Text = ({
   children,
-  color = ColorConstant.black,
+  color = ColorConstant.blueGray600,
   lineHeight,
   letterSpacing = 0.3,
   size = 'medium',
@@ -17,7 +17,6 @@ const Text = ({
   bold,
   bolder,
   medium,
-  italic,
   underline,
   style,
   ...props
@@ -34,7 +33,6 @@ const Text = ({
       bold && styles.bold,
       bolder && styles.bolder,
       medium && styles.medium,
-      italic && styles.italic,
       underline && styles.underline,
       { textAlign: AlignConstant[align] },
       { fontSize: FontSizeConstant[size] },
@@ -65,9 +63,6 @@ const styles = StyleSheet.create({
   },
   bolder: {
     fontFamily: 'Roboto-Black',
-  },
-  italic: {
-    fontStyle: 'italic',
   },
   underline: {
     textDecorationLine: 'underline',

@@ -11,7 +11,7 @@ import Text from '@components/Text'
 import TextInput from '@components/TextInput'
 import {PaddingSizeConstant} from "@constants/size";
 
-const Header = ({ title, scrollY, searchBox }) => {
+const Header = ({ title, searchBox }) => {
   // Search Form
   const { control: sControl, setValue: sSetValue, watch: sWatch } = useForm({
     mode: 'onChange',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: deviceWidth,
   },
   container: {
-    paddingHorizontal: PaddingSizeConstant.large,
+    paddingHorizontal: PaddingSizeConstant.small,
     paddingBottom: PaddingSizeConstant.small,
   },
   title: {

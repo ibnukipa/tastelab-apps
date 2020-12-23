@@ -4,7 +4,7 @@ export const FontSizeConstant = {
   xxSmall: 8,
   xSmall: 10,
   small: 12,
-  medium: 14, // normal
+  medium: 14,
   large: 16,
   xLarge: 18,
   xxLarge: 20,
@@ -22,7 +22,7 @@ export const PaddingSizeConstant = {
   xxSmall: 4,
   xSmall: 5,
   small: 10,
-  medium: 15, // normal
+  medium: 15,
   large: 20,
   xLarge: 25,
   xxLarge: 30,

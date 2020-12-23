@@ -6,12 +6,15 @@ import Touchable from "@components/Touchable"
 import {PaddingSizeConstant} from "@constants/size";
 import Divider from "@components/Divider";
 import ColorConstant from "@constants/color";
+import {useSelector} from "react-redux";
+import {materialCurrentIdSelector} from "@storage/reducer/material";
 
-const MaterialDetail = (props) => {
+const MaterialDetail = () => {
+  const material = useSelector(state => materialCurrentIdSelector(state))
   return (
     <Touchable style={styles.container} activeOpacity={0.9}>
       <View>
-        <Text medium size={'large'}>{props.name}</Text>
+        <Text medium size={'large'}>{material.id}</Text>
       </View>
       <Divider space={10}/>
       <View style={{ flexDirection: 'row' }}>
